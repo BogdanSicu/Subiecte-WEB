@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple app</title>
+    
+</head>
+<body>
+    A simple app
+    <table id=main></table>
+    <input type="text" id="filter" />
+    <button id=reload></button>
+</body>
+
+<script>
+    window.onload = async () => {
+        let btn = document.getElementById('reload')
+        let filter = document.getElementById('filter')
+        let tbl = document.getElementById('main')
+
+        const preluareDate =()=>{
+            const getData = new XMLHttpRequest();
+            getData.open('GET', 'http://localhost:8080/cars')
+
+            getData.responseType = 'json'
+
+            getData.onload =()=>{
+                const myData = getData.response
+
+                console.log(filter.value)
+
+                if(filter.value.length == 0){
+                    
+                    for(let i=0;i<myData.length;i++){
+                        let linie = document.createElement('tr')
+                        
+                        for(let element in myData[i]){
+                            
+                            let coloana = document.createElement('td')
+                            coloana.innerText = myData[i][element]
+                            linie.append(coloana)
+                        }
+                        tbl.append(linie)
+                    }
+                }
+                else if(filter.value == 'red'){
+                    for(let i=0;i<myData.length;i++){
+                        if(myData[i]['color'] == 'red'){
+                            let linie = document.createElement('tr')
+                            
+                            for(let element in myData[i]){
+                                
+                                let coloana = document.createElement('td')
+                                coloana.innerText = myData[i][element]
+                                linie.append(coloana)
+                            }
+                            tbl.append(linie)
+                        }
+                    }
+                }
+            }
+
+            getData.send()
+        }
+
+        btn.addEventListener('click', preluareDate)
+    }
+</script>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Webtech</title>
+    </head>
+    <body>
+        <h1>Webtech app</h1>
+        <table id="table"></table>
+        <input type='text' id=name/>
+        <button id=load>Load</button>
+        <button id=delete>Delete</button>
+        
+        <script>
+            const myLoad = document.getElementById('load')
+            const myDelete = document.getElementById('delete')
+            const myTable = document.getElementById('table')
+            myTable.innerHTML =''
+
+            async function getData(){
+                let result = await fetch('./data.json')
+                let myData = await result.json();
+                console.log(myData)
+                
+                for(let i=0;i<myData.length;i++){
+                    let linie = document.createElement('tr')
+                    for(let element in myData[i]){
+                        let coloana = document.createElement('td')
+                        coloana.innerText = myData[i][element]
+                        linie.append(coloana)
+                    }
+                    myTable.append(linie)
+                }
+            }
+
+            myLoad.addEventListener('click', getData)
+        </script>
+    </body>
+</html>
